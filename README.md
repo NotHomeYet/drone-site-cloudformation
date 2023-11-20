@@ -122,7 +122,7 @@ https://s3.amazonaws.com/solution-builders-us-east-1/amazon-cloudfront-secure-st
 3. Run the following command to package a build artifact.
 
    ```shell
-   make package-static
+   & "C:\Program Files (x86)\GnuWin32\bin\make" package-static
    ```
 
 4. Copy your website content into the **www** folder.
@@ -132,23 +132,18 @@ https://s3.amazonaws.com/solution-builders-us-east-1/amazon-cloudfront-secure-st
    aws s3 mb s3://<S3 bucket name>
    ```
 
+We use `altitude-droneworks-templates`
+
 6. Run the following AWS CLI command to package the CloudFormation template. The template uses the [AWS Serverless Application Model](https://aws.amazon.com/about-aws/whats-new/2016/11/introducing-the-aws-serverless-application-model/), so it must be transformed before you can deploy it.
 
    ```shell
-   aws --region us-east-1 cloudformation package \
-       --template-file templates/main.yaml \
-       --s3-bucket <your S3 bucket name> \
-       --output-template-file packaged.template
+   aws --region us-east-1 cloudformation package --template-file templates\main.yaml --s3-bucket altitude-droneworks-templates --output-template-file packaged.template
    ```
 
 7. Run the following command to deploy the packaged CloudFormation template to a CloudFormation stack. To optionally deploy the stack with a domain apex skip this section and proceed to [Step 8] below.
 
    ```shell
-   aws --region us-east-1 cloudformation deploy \
-       --stack-name <your CloudFormation stack name> \
-       --template-file packaged.template \
-       --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
-       --parameter-overrides  DomainName=<your domain name> HostedZoneId=<hosted zone id>
+   aws --region us-east-1 cloudformation deploy --stack-name altitude-droneworks-ui --template-file packaged.template --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --parameter-overrides  DomainName=altitudedroneworks.com HostedZoneId=Z059562210DTG0ZCEH1Q1
    ```
 
 8. [Optional] Run the following command to deploy the packaged CloudFormation template to a CloudFormation stack with a domain apex.
